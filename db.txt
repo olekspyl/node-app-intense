@@ -1,0 +1,17 @@
+Як підключити MySQL?
+
+
+
+1. Створити файл database.js для того, щоб там бул пул запитів (а не кожен запит окремо, це б блокувало відповідь від бази).
+const mysql = require('mysql12')
+const pool = mysql.createPool({
+	host: 'localhost',
+	user: 'root',
+	database: 'node_complete',
+	password: '//'
+})
+
+module.exports = pool.promises()
+
+2. Імпортуємо це в app.js на верхній рівень 
+const db = require('./utils.database')
