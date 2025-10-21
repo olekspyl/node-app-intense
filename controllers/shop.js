@@ -104,6 +104,8 @@ exports.postCart = (req, res, next) => {
 		.catch(err => console.log(err))
 }
 
+mongodb+srv://lemocream_db_user:PiNygYbhaAv9FZUe@cluster0.4ocf7qi.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+PiNygYbhaAv9FZUe
 exports.getOrders = (req, res, next) => {
 	req.user
 		.getOrders({ include: ['products'] })
