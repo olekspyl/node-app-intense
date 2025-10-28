@@ -1,8 +1,8 @@
 const Product = require('../models/product')
-const Order = require('../models/order')
+// const Order = require('../models/order')
 
 exports.getProducts = (req, res, next) => {
-	Product.findAll()
+	Product.fetchAll()
 		.then(products => {
 			res.render('shop/product-list', {
 				prods: products,
@@ -15,7 +15,7 @@ exports.getProducts = (req, res, next) => {
 
 exports.getProduct = (req, res, next) => {
 	const prodId = req.params.productId
-	Product.findByPk(Number(prodId))
+	Product.findById(prodId)
 		.then(product => {
 			res.render('shop/product-detail', {
 				product: product,
@@ -27,7 +27,7 @@ exports.getProduct = (req, res, next) => {
 }
 
 exports.getIndex = async (req, res, next) => {
-	Product.findAll()
+	Product.fetchAll()
 		.then(products => {
 			res.render('shop/index', {
 				prods: products,
@@ -104,8 +104,6 @@ exports.postCart = (req, res, next) => {
 		.catch(err => console.log(err))
 }
 
-mongodb+srv://lemocream_db_user:PiNygYbhaAv9FZUe@cluster0.4ocf7qi.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
-PiNygYbhaAv9FZUe
 exports.getOrders = (req, res, next) => {
 	req.user
 		.getOrders({ include: ['products'] })

@@ -9,7 +9,7 @@ app.set('view engine', 'ejs')
 app.set('views', 'views')
 
 const { adminRouter } = require('./routes/admin')
-// const { shopRouter } = require('./routes/shop')
+const { shopRouter } = require('./routes/shop')
 
 app.use(express.urlencoded({ extended: false }))
 app.use(express.static(path.join(__dirname, 'public')))
@@ -19,7 +19,7 @@ app.use((req, res, next) => {
 })
 
 app.use('/admin', adminRouter)
-// app.use(shopRouter)
+app.use(shopRouter)
 
 app.use(errorController.get404)
 
