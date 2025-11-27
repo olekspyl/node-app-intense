@@ -1,0 +1,23 @@
+<%- include('../includes/head.ejs') %>
+<body>
+	<main>
+		<%- include('../includes/navigation.ejs') %>
+		<form class="login-form" action="/signup" method="POST">
+			<div class="form-control">
+				<label for="email">E-mail</label>
+				<input id="email" name="email" type="email" />
+			</div>
+			<div class="form-control">
+				<label for="password">Password</label>
+				<input id="password" name="password" type="password" />
+			</div>
+			<div class="form-control">
+				<label for="password">Confirm Password</label>
+				<input id="password" name="confirmPassword" type="password" />
+			</div>
+			<input type="hidden" name="_csrf" value="<%= csrfToken%>" />
+			<button class="btn" type="submit">Sign up</button>
+		</form>
+	</main>
+</body>
+<%- include ('../includes/end.ejs')%>
