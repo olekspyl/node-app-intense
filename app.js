@@ -1,17 +1,19 @@
 const express = require('express')
 const path = require('path')
+require('dotenv').config({ quiet: true })
 const errorController = require('./controllers/error')
 const session = require('express-session')
 const MongoDBSession = require('connect-mongodb-session')(session)
+const csrf = require('csurf')
+const flash = require('connect-flash')
 // const { mongoConnect } = require('./utils/database')
 const User = require('./models/user')
 const mongoose = require('mongoose')
 
-const MONGODB_URI =
-	'mongodb+srv://lemocream_db_user:PiNygYbhaAv9FZUe@cluster0.4ocf7qi.mongodb.net/shop?retryWrites=true&w=majority&appName=Cluster0'
+const csrfProtection = csrf()
 const app = express()
 const store = new MongoDBSession({
-	uri: MONGODB_URI,
+	uri: process.env.MONGODB_URI,
 	collection: 'sessions',
 })
 
@@ -32,6 +34,8 @@ app.use(
 		store: store,
 	})
 )
+app.use(csrfProtection)
+app.use(flash())
 
 app.use((req, res, next) => {
 	if (!req.session.user) {
@@ -47,6 +51,12 @@ app.use((req, res, next) => {
 		})
 })
 
+app.use((req, res, next) => {
+	res.locals.isAuthenticated = req.session.isLoggedIn
+	res.locals.csrfToken = req.csrfToken()
+	next()
+})
+
 app.use('/admin', adminRouter)
 app.use(shopRouter)
 app.use(authRouter)
@@ -54,19 +64,8 @@ app.use(authRouter)
 app.use(errorController.get404)
 
 mongoose
-	.connect(MONGODB_URI)
+	.connect(process.env.MONGODB_URI)
 	.then(result => {
-		User.findOne().then(user => {
-			if (!user) {
-				const user = new User({
-					name: 'Max',
-					email: 'email@email.com',
-					cart: { items: [] },
-				})
-				user.save()
-			}
-		})
-
 		app.listen(3001)
 	})
 	.catch(err => console.log(first))
